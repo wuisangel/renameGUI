@@ -19,8 +19,6 @@ def open_dir():
     #Abrimos el dialog para seleccionar la carpeta
     try:
         carpeta=filedialog.askdirectory(title="Abrir")
-        print(carpeta)
-    
         #Mostramos la direccion de la carpeta en el Entry
         varDir.set(carpeta)
         # archivos=os.listdir(carpeta)#Realizamos un dir y guardamos la salida en una lista
@@ -116,6 +114,24 @@ rb3.pack()
 rb4=Radiobutton(fr3, text=".mp4", variable=varOp, value=4, command=fileType, state=DISABLED)
 rb4.pack()
 
+def limpiar():
+    global listaArchivos, archivos, carpeta
+    
+    varOp.set(0)
+    listaArchivos.delete(1.0, END)
+    codVar.set("")
+    indVar.set("")
+    varDir.set("")
+    #carpeta=""
+    
+    rb1.config(state=DISABLED)
+    rb2.config(state=DISABLED)
+    rb3.config(state=DISABLED)
+    rb4.config(state=DISABLED)
+    codEntry.config(state=DISABLED)
+    indEntry.config(state=DISABLED)
+    btRename.config(state=DISABLED)
+
 #Funciones frame 4
 def rename():
     global tipoArchivos, archivos, carpeta
@@ -134,7 +150,8 @@ def rename():
             subprocess.Popen(f'explorer {carp}')
             #volvemos a leer los archivos
             archivos=list(filter(lambda elemento: os.path.isdir(carpeta+"/"+elemento)==False,os.listdir(carpeta)))
-            fileType()
+            #fileType()
+            limpiar()
         else:
             messagebox.showerror("Error", "No existen archivos con la extensión "+tipos[int(varOp.get())])
     except KeyError:
